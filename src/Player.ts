@@ -18,7 +18,7 @@ export class Player {
         { role: "system", content: getSystemPrompt(gameState) },
         { role: "user", content: "How much should I bet?" },
       ],
-      model: "gpt-4-turbo-preview",
+      model: "gpt-3.5-turbo",
       response_format: { type: "json_object" },
     });
     console.timeEnd("OpenAI response time");
@@ -43,7 +43,7 @@ function getSystemPrompt(gameState: GameState): string {
     We are playing lean poker. We need to make a bet based on the following game state: ${JSON.stringify(
       gameState
     )}
-    Always return a JSON object with two properties:
-    - "bet": contains the amount you want to bet
-    - "reasoning": contains a string with your reasoning for the bet, should be only one sentence`;
+    Always return a JSON object with one properties:
+    - "bet": contains the amount you want to bet`;
+    //- "reasoning": contains a string with your reasoning for the bet, should be only one sentence`;
 }
