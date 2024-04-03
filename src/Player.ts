@@ -10,6 +10,7 @@ export class Player {
     const holeCards = myPlayer?.hole_cards;
 
     if (!myPlayer || !holeCards || !holeCards.length) {
+      console.log({myPlayer, holeCards, gameState});
       betCallback(0);
       return;
     }
@@ -27,7 +28,7 @@ export class Player {
 
     // Adjustments based on hand strength, position, and opponent behavior
     let betAmount = 0;
-
+    console.log({ handStrength, position });
     if (handStrength === "strong") {
       // If hand is strong, raise based on opponent aggression and position
       betAmount =
@@ -56,6 +57,8 @@ export class Player {
       return { rank: 0 };
     }
 
+    return { rank: 5 };
+    
     try {
       const config = {
         params: { cards: JSON.stringify(holeCards) },
@@ -72,8 +75,10 @@ export class Player {
   private async getHandStrength(
     holeCards: Card[]
   ): Promise<"strong" | "medium" | "weak"> {
+    return "medium";
     try {
       const handRanking = await this.getHandRanking(holeCards);
+      console.log({handRanking});
 
       // Determine hand strength based on hand ranking
       if (handRanking.rank >= 5) {
@@ -87,8 +92,8 @@ export class Player {
         return "weak";
       }
     } catch (error) {
-      console.error("Error determining hand strength:", error);
-      throw error;
+      console.error("🎀 error at getHandStrength");
+      throw "error at getHandStrength";
     }
   }
 
