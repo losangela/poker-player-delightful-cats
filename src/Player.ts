@@ -48,14 +48,15 @@ export class Player {
   // Helper function to determine hand strength
   private async getHandRanking(holeCards: Card[]): Promise<HandRanking> {
     try {
-      const response = await axios.get("https://rainman.leanpoker.org/rank", {
+      const config = {
         params: { cards: holeCards },
-      });
+      }
+      console.log("💖 getHandRanking", config);
+      const response = await axios.get("https://rainman.leanpoker.org/rank", config);
 
       return response.data;
     } catch (error) {
-      console.error("Error ranking hand:", error);
-      throw error;
+      throw "error at getHandRanking";
     }
   }
 
