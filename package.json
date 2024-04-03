@@ -9,7 +9,9 @@
         "build": "tsc -p ."
     },
     "dependencies": {
-        "express": "*"
+        "express": "*",
+        "openai": "4.32.1",
+        "dotenv": "16.4.5"
     },
     "engines": {
         "node": ">=20.10.0"

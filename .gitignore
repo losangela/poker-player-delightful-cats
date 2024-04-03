@@ -8,3 +8,9 @@ typings/
 out/
 web
 .sw[a-z]
+
+# Local Netlify folder
+.netlify
+
+# Local var vars
+.env
