@@ -9,6 +9,10 @@ export class Player {
     const myPlayer = gameState.players[gameState.in_action];
     const holeCards = myPlayer?.hole_cards;
 
+    if (!myPlayer || !holeCards || !holeCards.length) {
+      return betCallback(0);
+    }
+
     // Get important game state variables
     const currentBuyIn = gameState.current_buy_in;
     const minimumRaise = gameState.minimum_raise;
@@ -47,6 +51,10 @@ export class Player {
 
   // Helper function to determine hand strength
   private async getHandRanking(holeCards: Card[]): Promise<HandRanking> {
+    if (!holeCards || !holeCards.length) {
+      return { rank: 0 };
+    }
+
     try {
       const config = {
         params: { cards: holeCards },
