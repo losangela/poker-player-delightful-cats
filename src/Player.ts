@@ -18,7 +18,7 @@ export class Player {
         { role: "system", content: getSystemPrompt(gameState) },
         { role: "user", content: "How much should I bet?" },
       ],
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo-preview",
       response_format: { type: "json_object" },
     });
     console.timeEnd("OpenAI response time");
