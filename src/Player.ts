@@ -58,7 +58,7 @@ export class Player {
 
     try {
       const config = {
-        params: { cards: holeCards },
+        params: { cards: JSON.stringify(holeCards) },
       }
       console.log("💖 getHandRanking", config);
       const response = await axios.get("https://rainman.leanpoker.org/rank", config);
