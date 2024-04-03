@@ -2,7 +2,10 @@ import { GameState, PlayerInfo, Card, HandRanking } from "./types";
 import axios from "axios";
 
 export class Player {
-  public async betRequest(gameState: GameState, betCallback: (bet: number) => void): Promise<void> {
+  public async betRequest(
+    gameState: GameState,
+    betCallback: (bet: number) => void
+  ): Promise<void> {
     const myPlayer = gameState.players[gameState.in_action];
     const holeCards = myPlayer?.hole_cards;
 
@@ -13,18 +16,21 @@ export class Player {
     // Example strategy: Adjusted pre-flop hand ranges
     const handStrength = await this.getHandStrength(holeCards!);
     const position = this.getPosition(gameState);
+
+    // ✨ likely no need to look at opponent aggression until there's less players in the round
     const opponentAggression = this.getOpponentAggression(gameState.players);
 
     // Adjustments based on hand strength, position, and opponent behavior
     let betAmount = 0;
 
-    if (handStrength === 'strong') {
+    if (handStrength === "strong") {
       // If hand is strong, raise based on opponent aggression and position
-      betAmount = currentBuyIn - myPlayer.bet + minimumRaise + (opponentAggression * 10);
-    } else if (handStrength === 'medium' && position === 'late') {
+      betAmount =
+        currentBuyIn - myPlayer.bet + minimumRaise + opponentAggression * 10;
+    } else if (handStrength === "medium" && position === "late") {
       // If hand is medium and in late position, consider a raise
       betAmount = currentBuyIn - myPlayer.bet + minimumRaise;
-    } else if (handStrength === 'weak' && position === 'late') {
+    } else if (handStrength === "weak" && position === "late") {
       // If hand is weak but in late position, consider calling or folding
       betAmount = Math.min(currentBuyIn - myPlayer.bet, myPlayer.stack / 20);
     } else {
@@ -42,50 +48,52 @@ export class Player {
   // Helper function to determine hand strength
   private async getHandRanking(holeCards: Card[]): Promise<HandRanking> {
     try {
-      const response = await axios.get('https://rainman.leanpoker.org/rank', {
-        params: { cards: holeCards }
+      const response = await axios.get("https://rainman.leanpoker.org/rank", {
+        params: { cards: holeCards },
       });
 
       return response.data;
     } catch (error) {
-      console.error('Error ranking hand:', error);
+      console.error("Error ranking hand:", error);
       throw error;
     }
   }
 
-  private async getHandStrength(holeCards: Card[]): Promise<'strong' | 'medium' | 'weak'> {
+  private async getHandStrength(
+    holeCards: Card[]
+  ): Promise<"strong" | "medium" | "weak"> {
     try {
-        const handRanking = await this.getHandRanking(holeCards);
-        
-        // Determine hand strength based on hand ranking
-        if (handRanking.rank >= 5) {
-            // Hands ranked 5 or higher are considered strong
-            return 'strong';
-        } else if (handRanking.rank >= 2) {
-            // Hands ranked 2 to 4 are considered medium
-            return 'medium';
-        } else {
-            // Hands ranked 0 or 1 are considered weak
-            return 'weak';
-        }
+      const handRanking = await this.getHandRanking(holeCards);
+
+      // Determine hand strength based on hand ranking
+      if (handRanking.rank >= 5) {
+        // Hands ranked 5 or higher are considered strong
+        return "strong";
+      } else if (handRanking.rank >= 2) {
+        // Hands ranked 2 to 4 are considered medium
+        return "medium";
+      } else {
+        // Hands ranked 0 or 1 are considered weak
+        return "weak";
+      }
     } catch (error) {
-        console.error('Error determining hand strength:', error);
-        throw error;
+      console.error("Error determining hand strength:", error);
+      throw error;
     }
   }
 
   // Helper function to determine player position
-  private getPosition(gameState: GameState): 'early' | 'middle' | 'late' {
+  private getPosition(gameState: GameState): "early" | "middle" | "late" {
     // Example: Determine player position based on dealer position
     const dealerPosition = gameState.dealer;
     const myPosition = gameState.in_action;
 
     if (myPosition < dealerPosition) {
-      return 'early';
+      return "early";
     } else if (myPosition === dealerPosition) {
-      return 'middle';
+      return "middle";
     } else {
-      return 'late';
+      return "late";
     }
   }
 
