@@ -2,7 +2,7 @@ import { GameState, PlayerInfo, Card, HandRanking } from "./types";
 import axios from "axios";
 
 export class Player {
-  public async betRequest(gameState: GameState, betCallback: (bet: number) => void): void {
+  public async betRequest(gameState: GameState, betCallback: (bet: number) => void): Promise<void> {
     const myPlayer = gameState.players[gameState.in_action];
     const holeCards = myPlayer?.hole_cards;
 
