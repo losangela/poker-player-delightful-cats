@@ -10,7 +10,8 @@ export class Player {
     const holeCards = myPlayer?.hole_cards;
 
     if (!myPlayer || !holeCards || !holeCards.length) {
-      return betCallback(0);
+      betCallback(0);
+      return;
     }
 
     // Get important game state variables
