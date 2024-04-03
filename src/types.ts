@@ -3,7 +3,7 @@ export type Card = {
   suit: 'clubs' | 'spades' | 'hearts' | 'diamonds';
 };
 
-export type PlayerType = {
+export type PlayerInfo = {
   id: number; // Id of the player (same as the index)
   name: string; // Name specified in the tournament config
   status: 'active' | 'folded' | 'out'; // Status of the player
@@ -25,6 +25,10 @@ export type GameState = {
   dealer: number; // The index of the player on the dealer button in this round
   orbits: number; // Number of orbits completed
   in_action: number; // The index of your player, in the players array
-  players: PlayerType[]; // An array of the players
+  players: PlayerInfo[]; // An array of the players
   community_cards: Card[]; // The array of community cards
 };
+
+export interface HandRanking {
+  rank: number;
+}
