@@ -7,7 +7,7 @@ export class Player {
     // betCallback(0);
 
     const myPlayer = gameState.players[gameState.in_action];
-    const holeCards = myPlayer.hole_cards;
+    const holeCards = myPlayer?.hole_cards;
 
     // Example strategy: Fold unless we have at least one high card
     const highCards = ['A', 'K', 'Q', 'J'];
